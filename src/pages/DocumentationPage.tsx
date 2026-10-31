@@ -299,7 +299,7 @@ export const DocumentationPage: React.FC = () => {
             Verification & Validation: NACA 0012 Experimental Benchmark
           </h2>
           <p className="text-xs text-slate-600 dark:text-slate-400 leading-relaxed">
-            Solver accuracy is benchmarked against wind tunnel experiments from NASA Langley Research Center and the classic Abbott & von Doenhoff aerodynamic database.
+            Solver accuracy is benchmarked against calibrated wind tunnel experiments and the classic Abbott & von Doenhoff aerodynamic database.
           </p>
 
           <div className="overflow-x-auto">
@@ -307,7 +307,7 @@ export const DocumentationPage: React.FC = () => {
               <thead className="bg-slate-50 dark:bg-slate-800/70 border-b border-slate-200 dark:border-slate-800 text-[11px] text-slate-600 dark:text-slate-400">
                 <tr>
                   <th className="p-3">Angle of Attack</th>
-                  <th className="p-3">NASA Wind Tunnel CL</th>
+                  <th className="p-3">Calibrated Wind Tunnel CL</th>
                   <th className="p-3">simpleFoam k-ω SST CL</th>
                   <th className="p-3">Relative Error</th>
                   <th className="p-3">Convergence</th>

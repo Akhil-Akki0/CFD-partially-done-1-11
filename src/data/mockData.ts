@@ -9,7 +9,7 @@ import {
 export const INITIAL_PROJECTS: Project[] = [
   {
     projectId: 'proj-fsae-aerodynamics',
-    name: 'Car Aerodynamics — Formula SAE Wing',
+    name: 'Motorsport Aerodynamics — Open-Wheel Racing Wing',
     description: 'Ground effect front multi-element wing and chassis vortex interaction study at 25 m/s.',
     cfdType: 'External Aerodynamics',
     fluidType: 'Air',

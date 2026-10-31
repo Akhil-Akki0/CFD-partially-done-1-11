@@ -623,7 +623,7 @@ export const GeometryPage: React.FC = () => {
   const handleLoadSampleFile = (type: 'fsae_wing' | 'propeller' | 'airfoil' | 'cylinder') => {
     sound.playSave();
     const configMap = {
-      fsae_wing: { name: 'FSAE Front Downforce Wing', filename: 'fsae_front_wing.stl', format: 'STL' },
+      fsae_wing: { name: 'Formula Racing Downforce Wing', filename: 'formula_front_wing.stl', format: 'STL' },
       propeller: { name: 'High-Twist Drone Propeller', filename: 'drone_propeller.ply', format: 'PLY' },
       airfoil: { name: 'Supercritical Transonic Wing', filename: 'transonic_wing.obj', format: 'OBJ' },
       cylinder: { name: 'Vortex Shedding Cylinder', filename: 'karman_cylinder.vtk', format: 'VTK' },
@@ -838,7 +838,7 @@ export const GeometryPage: React.FC = () => {
               </div>
               <div className="grid grid-cols-2 gap-1.5">
                 {[
-                  { id: 'fsae_wing', label: 'FSAE Wing (STL)', icon: '🏎️' },
+                  { id: 'fsae_wing', label: 'Formula Wing (STL)', icon: '🏎️' },
                   { id: 'airfoil', label: 'Supercritical (OBJ)', icon: '✈️' },
                   { id: 'propeller', label: 'Drone Rotor (PLY)', icon: '🚁' },
                   { id: 'cylinder', label: 'Vortex Tube (VTK)', icon: '🌪️' },
@@ -863,7 +863,7 @@ export const GeometryPage: React.FC = () => {
                 </span>
                 <Tooltip
                   title="Aerodynamic Benchmarks"
-                  content="Calibrated benchmark models for validating CFD solvers against published experimental wind tunnel and NASA Langley research data."
+                  content="Calibrated benchmark models for validating CFD solvers against published experimental wind tunnel and calibrated empirical research data."
                 />
               </div>
 
@@ -895,7 +895,7 @@ export const GeometryPage: React.FC = () => {
                   },
                   {
                     id: 'fsae_wing',
-                    name: 'FSAE Front Wing',
+                    name: 'Formula Downforce Wing',
                     icon: '🏎️',
                     desc: 'High-downforce multi-element inverted wing with endplates for ground-effect racing.'
                   },

@@ -3,8 +3,8 @@ import { usePlatform } from '../context/PlatformContext';
 import { ArrowDown } from 'lucide-react';
 import { sound } from '../utils/soundEffects';
 
-const VIDEO_URL = '/videos/robot_fast.mp4';
-const FALLBACK_VIDEO_URL = '/videos/robot_clean.mp4';
+const VIDEO_URL = '/videos/robot_clean.mp4'; // 3.7MB optimized seekable video stream
+const FALLBACK_VIDEO_URL = '/videos/robot_fast.mp4';
 const TERTIARY_VIDEO_URL = '/videos/robot.mp4';
 
 // Authentic aerodynamics chapters from user repository
@@ -64,8 +64,8 @@ const CHAPTERS = [
     description:
       'An end-to-end aerodynamic pipeline: automated surface mesh healing, boundary condition validation, residual convergence tracking, and instant solver export.',
     specs: [
-      { label: 'Standard', value: 'FAA FAR-25' },
-      { label: 'Solver', value: 'OpenFOAM' },
+      { label: 'Standard', value: 'Aero Spec Part-25' },
+      { label: 'Solver', value: 'CFD simpleFoam' },
       { label: 'Pipeline', value: 'HDF5 / VTK' },
     ],
   },
@@ -79,25 +79,23 @@ export const RobotWalkthroughPage: React.FC = () => {
 
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const targetTimeRef = useRef<number>(0);
+  const isSeekingRef = useRef<boolean>(false);
   const containerRef = useRef<HTMLDivElement | null>(null);
   const hasTransitionedRef = useRef<boolean>(false);
 
-  // Synchronize video currentTime with user scroll without frame drops
-  const syncVideoTime = useCallback(() => {
+  // Ultra-smooth seekable frame sync guarded against browser decoder thrashing
+  const requestFrameSync = useCallback(() => {
     const video = videoRef.current;
-    if (video && video.duration && !Number.isNaN(video.duration)) {
-      const diff = targetTimeRef.current - video.currentTime;
-      if (Math.abs(diff) > 0.015) {
-        const vid = video as HTMLVideoElement & { fastSeek?: (time: number) => void };
-        if (typeof vid.fastSeek === 'function') {
-          try {
-            vid.fastSeek(targetTimeRef.current);
-          } catch {
-            video.currentTime = targetTimeRef.current;
-          }
-        } else {
-          video.currentTime = targetTimeRef.current;
-        }
+    if (!video || !video.duration || Number.isNaN(video.duration)) return;
+    if (isSeekingRef.current) return;
+
+    const diff = targetTimeRef.current - video.currentTime;
+    if (Math.abs(diff) > 0.02) {
+      isSeekingRef.current = true;
+      try {
+        video.currentTime = targetTimeRef.current;
+      } catch {
+        isSeekingRef.current = false;
       }
     }
   }, []);
@@ -116,7 +114,7 @@ export const RobotWalkthroughPage: React.FC = () => {
     const video = videoRef.current;
     if (video && video.duration && !Number.isNaN(video.duration)) {
       targetTimeRef.current = progress * video.duration;
-      syncVideoTime();
+      requestFrameSync();
     }
 
     // Natural character sway tracking: follows the character's walking stride
@@ -131,19 +129,29 @@ export const RobotWalkthroughPage: React.FC = () => {
     } else if (progress < 0.92) {
       hasTransitionedRef.current = false;
     }
-  }, [syncVideoTime, setPage]);
+  }, [requestFrameSync, setPage]);
 
   useEffect(() => {
     let animId: number;
     const container = containerRef.current;
+    const video = videoRef.current;
     if (!container) return;
+
+    const onSeeked = () => {
+      isSeekingRef.current = false;
+      requestFrameSync();
+    };
+
+    if (video) {
+      video.addEventListener('seeked', onSeeked);
+    }
 
     const onScroll = () => {
       handleScroll();
     };
 
     const loop = () => {
-      syncVideoTime();
+      requestFrameSync();
       animId = requestAnimationFrame(loop);
     };
 
@@ -152,10 +160,13 @@ export const RobotWalkthroughPage: React.FC = () => {
     animId = requestAnimationFrame(loop);
 
     return () => {
+      if (video) {
+        video.removeEventListener('seeked', onSeeked);
+      }
       container.removeEventListener('scroll', onScroll);
       cancelAnimationFrame(animId);
     };
-  }, [handleScroll, syncVideoTime]);
+  }, [handleScroll, requestFrameSync]);
 
   // Virtual index for sequential chapter transitions (0 to 3)
   const virtualIndex = scrollProgress * (CHAPTERS.length - 1);
@@ -164,7 +175,6 @@ export const RobotWalkthroughPage: React.FC = () => {
     <div
       ref={containerRef}
       className="relative w-full h-[100dvh] text-white select-none overflow-y-auto overflow-x-hidden font-sans bg-black"
-      style={{ scrollBehavior: 'smooth' }}
     >
       {/* Fixed Full-Screen Background Video: Synchronized with scroll */}
       <video
@@ -173,6 +183,7 @@ export const RobotWalkthroughPage: React.FC = () => {
         muted
         playsInline
         preload="auto"
+        disablePictureInPicture
         onError={() => {
           if (videoSrc === VIDEO_URL) {
             setVideoSrc(FALLBACK_VIDEO_URL);
@@ -191,6 +202,9 @@ export const RobotWalkthroughPage: React.FC = () => {
           height: '100vh',
           objectFit: 'cover',
           objectPosition: 'center',
+          transform: 'translate3d(0, 0, 0)',
+          willChange: 'transform',
+          backfaceVisibility: 'hidden',
         }}
       />
 
@@ -289,19 +303,6 @@ export const RobotWalkthroughPage: React.FC = () => {
             </div>
           );
         })}
-      </div>
-
-      {/* BOTTOM-LEFT CORNER: Computer Dynamic Fluids Platform Basics */}
-      <div
-        className="fixed bottom-6 left-6 sm:left-12 z-20 max-w-sm pointer-events-none drop-shadow-[0_2px_10px_rgba(0,0,0,0.95)]"
-        aria-label="Computer Dynamic Fluids Basics"
-      >
-        <span className="text-[11px] font-mono uppercase tracking-widest text-white/50 block">
-          Platform Architecture
-        </span>
-        <span className="text-xs font-semibold text-white/90 tracking-wide">
-          Computer Dynamic Fluids (CDF) · Neural Turbulence Engine
-        </span>
       </div>
 
       {/* SCROLL HELPER HINT IN CENTER BOTTOM */}

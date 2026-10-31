@@ -178,27 +178,27 @@ export const Navbar: React.FC = () => {
     };
   }, [mobileMenuOpen]);
 
-  // Shared uniform button height & alignment classes so every single element is 100% even in size
-  const uniformButtonBase = `w-full h-[38px] min-h-[38px] max-h-[38px] rounded-xl text-xs font-semibold whitespace-nowrap relative cursor-pointer select-none flex items-center ${
+  // Shared uniform button height & alignment classes with cylindrical capsule styling
+  const uniformButtonBase = `w-full h-[38px] min-h-[38px] max-h-[38px] rounded-full text-xs font-semibold whitespace-nowrap relative cursor-pointer select-none flex items-center transition-all ${
     isCollapsed ? 'justify-center px-0' : 'justify-between px-3'
   }`;
 
   return (
     <>
       {/* 
-        LEFT-SIDE NAVIGATION WORKBENCH BAR WITH AEROSPACE GLASSMORPHISM
-        All items are 100% uniform in width & height with smooth in-and-out animations
+        LEFT-SIDE NAVIGATION WORKBENCH BAR: FLOATING CYLINDRICAL BOX
+        Curved corners, floating margin gaps on left, top, and bottom
       */}
       <header
         className={`glass-sidebar ${
           isCollapsed ? 'lg:w-20' : 'lg:w-64'
-        } lg:h-full lg:flex-col lg:justify-between z-40 shrink-0 sticky top-0 w-full h-14 lg:h-full flex items-center justify-between lg:items-stretch select-none px-3 py-2 sm:px-4 lg:px-0 overflow-hidden`}
+        } lg:flex-col lg:justify-between z-40 shrink-0 sticky top-0 m-2.5 sm:m-3 lg:m-0 lg:my-3 lg:ml-3.5 lg:mr-2 w-[calc(100%-1.25rem)] sm:w-[calc(100%-1.5rem)] lg:w-auto h-14 lg:h-[calc(100dvh-1.5rem)] flex items-center justify-between lg:items-stretch select-none px-3 py-2 sm:px-4 lg:px-0 overflow-hidden rounded-[1.75rem] lg:rounded-[2.25rem] border border-white/60 dark:border-white/20 shadow-xl lg:shadow-2xl`}
       >
-        {/* Top: Brand Logo & Title with Smooth Slide In/Out Button */}
+        {/* Top: Brand Logo & Title with Smooth Slide In/Out Button (Curved container) */}
         <div
           className={`flex items-center ${
             isCollapsed ? 'lg:flex-col lg:items-center lg:gap-2.5 lg:px-2' : 'justify-between lg:px-3.5'
-          } p-2 lg:py-3 lg:border-b border-white/20 dark:border-white/10 bg-transparent shrink-0 w-full lg:w-auto justify-between`}
+          } p-2 lg:py-3.5 lg:border-b border-white/20 dark:border-white/10 bg-transparent shrink-0 w-full lg:w-auto justify-between rounded-t-[1.75rem] lg:rounded-t-[2.25rem]`}
         >
           {/* Logo: Always visible on mobile; on desktop shows full text when expanded, icon when collapsed */}
           <button
@@ -225,7 +225,7 @@ export const Navbar: React.FC = () => {
                 onClick={handleSlideToggle}
                 aria-label={isCollapsed ? 'Extend options' : 'Minimize options'}
                 title={isCollapsed ? 'Extend options' : 'Minimize options'}
-                className="glass-item w-9 h-9 min-h-[36px] min-w-[36px] flex items-center justify-center rounded-xl text-slate-800 dark:text-slate-100 cursor-pointer shadow-xs hover:bg-white/40 transition-colors"
+                className="glass-item w-9 h-9 min-h-[36px] min-w-[36px] flex items-center justify-center rounded-full text-slate-800 dark:text-slate-100 cursor-pointer shadow-xs hover:bg-white/40 transition-colors"
               >
                 <div id="css-selector-id" className="flex items-center justify-center">
                   {isCollapsed ? (
@@ -242,7 +242,7 @@ export const Navbar: React.FC = () => {
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-label={mobileMenuOpen ? 'Close Menu' : 'Open Navigation Menu'}
-            className="glass-item flex lg:hidden items-center justify-center p-2 min-h-[38px] min-w-[38px] rounded-xl text-slate-800 dark:text-slate-200 cursor-pointer"
+            className="glass-item flex lg:hidden items-center justify-center p-2 min-h-[38px] min-w-[38px] rounded-full text-slate-800 dark:text-slate-200 cursor-pointer"
           >
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>

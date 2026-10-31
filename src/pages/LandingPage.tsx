@@ -51,7 +51,7 @@ const AIRFOILS: AirfoilPreset[] = [
   },
   {
     id: 'sc20714',
-    name: 'NASA SC(2)-0714',
+    name: 'Supercritical SC(2)-0714',
     type: 'Supercritical Transonic',
     baseCl: 0.13,
     baseCd: 0.0095,

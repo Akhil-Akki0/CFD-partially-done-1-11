@@ -542,11 +542,6 @@ export const LimitsHeroPage: React.FC = () => {
           <ArrowRight className="w-3.5 h-3.5 text-sky-400" />
         </button>
       </div>
-
-      {/* Bottom info banner */}
-      <footer className="fixed bottom-4 left-6 sm:left-12 z-10 pointer-events-none drop-shadow-sm text-[11px] font-mono text-slate-500">
-        LIMITS Aerodynamics Hero · Click video pill or button to transcend boundaries
-      </footer>
     </div>
   );
 };
